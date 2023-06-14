@@ -4,8 +4,10 @@ import java.net.*;
 public class PacketSender{
 
     Socket MyClient;
+    DataInputStream input;
+    DataOutputStream output;
 
-    public PacketReceiver(int portNum){ 
+    public PacketSender(int portNum){ 
         
         try{
             MyClient = new Socket("IP Address",portNum);
@@ -13,5 +15,9 @@ public class PacketSender{
         catch (IOException e){
             System.out.println(e);
         }
-    } 
+    }
+
+    public static void main(String[] args){
+        PacketSender sender = new PacketSender(Integer.parseInt(args[0]));
+    }
 }
