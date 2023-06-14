@@ -1,11 +1,15 @@
-public PacketReceiver{
+import java.io.*;
+import java.net.*;
+
+public class PacketReceiver{
     ServerSocket MyService;
 
-    public PacketReceiver(){
-        try {
-            MyServerice = new ServerSocket(PortNumber);
+    public PacketReceiver(int portNum){
+
+        try{
+            MyServerice = new ServerSocket(portNum);
         }
-        catch (IOException e) {
+        catch (IOException e){
             System.out.println(e);
         }
 

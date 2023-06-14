@@ -1,14 +1,16 @@
-public PacketSender{
+import java.io.*;
+import java.net.*;
+
+public class PacketSender{
 
     Socket MyClient;
 
-    public PacketReceiver(){ 
+    public PacketReceiver(int portNum){ 
         
-        try {
-            MyClient = new Socket("Machine name",
-            PortNumber);
+        try{
+            MyClient = new Socket("IP Address",portNum);
         }
-        catch (IOException e) {
+        catch (IOException e){
             System.out.println(e);
         }
     } 
