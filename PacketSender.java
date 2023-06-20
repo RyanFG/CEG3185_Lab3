@@ -3,21 +3,49 @@ import java.net.*;
 
 public class PacketSender{
 
-    Socket MyClient;
-    DataInputStream input;
-    DataOutputStream output;
+    Socket MyClient = null;
+    DataInputStream input = null;
+    DataOutputStream output = null;
 
-    public PacketSender(int portNum){ 
+    public PacketSender(String address,int portNum){ 
         
         try{
-            MyClient = new Socket("IP Address",portNum);
+            MyClient = new Socket(address,portNum);
+
+            input = new DataInputStream(System.in);
+            output = new DataOutputStream(MyClient.getOutputStream());
         }
-        catch (IOException e){
-            System.out.println(e);
+        catch (UnknownHostException u) {
+            System.out.println(u);
+            return;
+        }
+        catch (IOException i) {
+            System.out.println(i);
+            return;
+        }
+
+        String line = "";
+
+        while (!line.equals("over")){
+            try{
+                line = input.readLine();
+                output.writeUTF(line);
+            }
+            catch (IOException i) {
+                System.out.println(i);
+            }
+        }
+        try {
+            input.close();
+            output.close();
+            MyClient.close();
+        }
+        catch (IOException i) {
+            System.out.println(i);
         }
     }
 
     public static void main(String[] args){
-        PacketSender sender = new PacketSender(Integer.parseInt(args[0]));
+        PacketSender sender = new PacketSender(args[0],Integer.parseInt(args[1]));
     }
 }
