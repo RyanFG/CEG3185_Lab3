@@ -22,7 +22,7 @@ public class PacketReceiver{
             while (!line.equals("over"))
             {
                 try{
-                    line = in.readUTF();
+                    line = input.readUTF();
                     System.out.println(line);
  
                 }
