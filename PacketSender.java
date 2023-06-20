@@ -25,11 +25,15 @@ public class PacketSender{
         }
 
         String line = "";
+        String encoded = "";
 
         while (!line.equals("over")){
             try{
                 line = input.readLine();
-                output.writeUTF(line);
+
+                encoded = encoder(line);
+
+                output.writeUTF(encoded);
             }
             catch (IOException i) {
                 System.out.println(i);
@@ -43,6 +47,24 @@ public class PacketSender{
         catch (IOException i) {
             System.out.println(i);
         }
+    }
+
+    public String encoder(String msg){
+        String hexa = toHexa(msg);
+        return hexa;
+    }
+
+    public String toHexa(String str){
+        StringBuffer sb = new StringBuffer();
+        char ch[] = str.toCharArray();
+
+        for(int i = 0; i < ch.length; i++) {
+            String hexString = Integer.toHexString(ch[i]);
+            sb.append(hexString);
+        }
+
+        String result = sb.toString();
+        return result;
     }
 
     public static void main(String[] args){

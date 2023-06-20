@@ -18,12 +18,16 @@ public class PacketReceiver{
             input = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
 
             String line = "";
+            String decoded = "";
 
-            while (!line.equals("over"))
+            while (!decoder(line).equals("over"))
             {
                 try{
                     line = input.readUTF();
-                    System.out.println(line);
+
+                    decoded = decoder(line);
+
+                    System.out.println(decoded);
  
                 }
                 catch(IOException i){
@@ -35,6 +39,22 @@ public class PacketReceiver{
             System.out.println(e);
         }
 
+    }
+
+    public String decoder(String msg){
+        String text = toString(msg);
+        return text;
+    }
+
+    public String toString(String str){
+        String result = new String();
+        char[] charArray = str.toCharArray();
+        for(int i = 0; i < charArray.length; i=i+2) {
+            String st = ""+charArray[i]+""+charArray[i+1];
+            char ch = (char)Integer.parseInt(st, 16);
+            result = result + ch;
+        }
+        return result;
     }
 
     public static void main(String[] args){
