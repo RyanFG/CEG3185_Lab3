@@ -50,8 +50,25 @@ public class PacketSender{
     }
 
     public String encoder(String msg){
+        String all = "";
         String hexa = toHexa(msg);
-        return hexa;
+        String datagram = "";
+        String header = "4500";
+        Double num = 20.0+(hexa.length()/2);
+        String headerIP = toHexa(Integer.toString((int)Math.floor(num)));
+        String ident = "1C46";
+        String flag = "4000";
+        String ttl = "4006";
+        String checksum = "0000";
+        String srcIP = toHexa("192.168.0.3");
+        String dstIP = toHexa("192.168.0.1");
+
+        String sum = hexaAdd(header,headerIP,ident,flag,ttl,checksum,srcIP,dstIP);
+
+        datagram = header+headerIP+ident+flag+ttl+checksum+srcIP+dstIP;
+        all = datagram+hexa;
+
+        return all;
     }
 
     public String toHexa(String str){
@@ -66,6 +83,88 @@ public class PacketSender{
         String result = sb.toString();
         return result;
     }
+
+    public String hexaAdd(String header,String headerIP,String ident,String flag,String ttl,String checksum,String srcIP,String dstIP){
+        String src1 = srcIP.substring(0,3);
+        String src2 = srcIP.substring(4,7);
+        String dst1 = dstIP.substring(0,3);
+        String dst2 = dstIP.substring(4,7);
+
+        String sum = "";
+        return sum;
+    }
+
+    /*
+    public void DatagramIP(byte [] buffer, int length){
+        DatagramSocket s = null;
+        try{
+            s = new DatagramSocket();
+            byte buffer;
+            buffer = new String ("Send me a datagram").getBytes ();
+            InetAddress ip = InetAddress.get("192.168.0.3");
+            
+            dgrm = new DatagramIP ();
+            
+            s.send(dgrm);
+            
+            
+            byte [] buffer2 = new byte [0000];
+            dgrm = new DatagramIP (buffer2, buffer.length, ip, portNum);
+            s.receive (dgrm);
+            
+            System.out.println (new String (dgrm.getData ()));
+		}
+		catch (IOException e){
+			System.out.println (e.toString ());
+		}
+		finally{
+			if (s != null)
+			    s.close ();
+		}
+	}
+
+    public void ChecksumSender(InetAddress ip,int port)throws IOException {
+        c = new Socket(ip,port);
+        input = new DataInputStream(socket.getInputStream());
+        output = new DataOutputStream(socket.getOutputStream());
+        while (true){
+        int i, l, sum = 0, numb;
+        l = data.length;
+        int data[] = new string [MAX];
+		int c_data[] = new string [MAX];
+		System.out.println("data to send");
+		 
+		 
+		for (i = 0; i < l; i++){
+			data[i] = sc.nextInt();
+			numb = (int)(Math.floor(Math.log(data[i]) / Math.log(2))) + 1;
+			 
+			c_data[i] = ((1 << numb) - 1) ^ data[i];
+			 
+			sum += c_data[i];
+		}
+		 
+		data[i] = sum;
+        l += 1;
+         
+        System.out.println("Checksum Calculated is : " + sum);
+        System.out.println("Data being sent along with Checksum.....");
+		
+		if (dis.readUTF().equals("failure")){
+			System.out.println("Message was not received successfully!");
+			break;
+		}
+		else if (dis.readUTF().equals("success")){
+			System.out.println("Message received Successfully!");
+			break;			
+        }
+	}
+	output.close();
+	input.close();
+	socket.close();
+	  
+    }
+    */
 
     public static void main(String[] args){
         PacketSender sender = new PacketSender(args[0],Integer.parseInt(args[1]));

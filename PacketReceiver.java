@@ -8,7 +8,7 @@ public class PacketReceiver{
     private DataInputStream input = null;
 
 
-    public PacketReceiver(int portNum){
+    public PacketReceiver(String address, int portNum){
 
         try{
             MyServer = new ServerSocket(portNum);
@@ -20,12 +20,15 @@ public class PacketReceiver{
             String line = "";
             String decoded = "";
 
-            while (!decoder(line).equals("over"))
+            while (true)
             {
                 try{
                     line = input.readUTF();
 
-                    decoded = decoder(line);
+                    decoded = decoder(line.substring(54));
+                    if(decoder(line.substring(54)).equals("over")){
+                        break;
+                    }
 
                     System.out.println(decoded);
  
@@ -57,7 +60,56 @@ public class PacketReceiver{
         return result;
     }
 
+     /*
+    public void DatagramIP(byte [] buffer, int length){
+        DatagramSocket s = new DatagramSocket ();
+        byte [] data = new byte [0000];
+        DatagramPacket dgrm = new DatagramPacket (data, data.length);
+        while (true){
+            s.receive (dgrm);
+            System.out.println (new String (data));
+            s.send (dgrm);
+        }
+    }
+
+    public void ChecksumReceiver(InetAddress ip,int port)throws IOException {
+        c = new Socket(ip,port);
+        input = new DataInputStream(socket.getInputStream());
+        output = new DataOutputStream(socket.getOutputStream());
+
+        while (true){
+            int i, l, sum = 0, numb;
+            l = data.length;
+            int data[] = new string[l];
+            int c_data[] = new string [l];
+            System.out.println("Data received (along with checksum) is");
+            
+            for (i = 0; i < data.length; i++){
+                data[i] = input.nextInt();
+                System.out.println(data[i]);
+                
+                numb = (int)(Math.floor(Math.log(data[i]) / Math.log(2))) + 1;				 
+                c_data[i] = ((1 << numb) - 1) ^ data[i];
+                
+                System.out.println("Calculated Checksum is : "+sum);
+                
+                if(sum == 0){
+                    output.writeUTF("success");
+                    break;
+                }
+                else{
+                    output.writeUTF("failure");
+                    break;
+                }
+                input.close();
+                output.close();
+                c.close();	
+            }		
+        }			 
+    }
+    */
+
     public static void main(String[] args){
-        PacketReceiver receiver = new PacketReceiver(Integer.parseInt(args[0]));
+        PacketReceiver receiver = new PacketReceiver(args[0],Integer.parseInt(args[1]));
     }
 }
