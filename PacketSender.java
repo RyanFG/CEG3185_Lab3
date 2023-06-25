@@ -170,3 +170,123 @@ public class PacketSender{
         PacketSender sender = new PacketSender(args[0],Integer.parseInt(args[1]));
     }
 }
+
+/*
+
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+public class PacketSender { 
+
+	private Socket MyClient;
+	private BufferedReader input;
+	private DataOutputStream output;
+
+	
+	public PacketSender(InetAddress address, int port){ 
+
+		try
+		{ 
+			
+			MyClient = new Socket(address, port); 
+			System.out.println("Connected"); 
+
+			
+			input = new BufferedReader(new InputStreamReader(System.in));
+
+			
+			output = new DataOutputStream(MyClient.getOutputStream()); 
+		} 
+		catch(UnknownHostException e) 
+		{ 
+			System.out.println(e); 
+		} 
+		catch(IOException e) 
+		{ 
+			System.out.println(e); 
+		} 
+
+		
+		String line = ""; 
+
+		
+		while (!line.equals("Stop")) 
+		{ 
+			try
+			{ 
+				line = input.readLine();
+				
+				output.writeUTF(line); 
+			} 
+			catch(IOException i) 
+			{ 
+				System.out.println(i); 
+			} 
+		} 
+		try
+		{ 
+			input.close(); 
+			output.close(); 
+			MyClient.close(); 
+		} 
+		catch(IOException i) 
+		{ 
+			System.out.println(i); 
+		} 
+	} 
+	
+	public void DatagramSender(byte [] buf, int length, InetAddress address, int port){
+		try{
+		 DatagramSocket dsck = new DatagramSocket ();
+		 String msg = new String();
+		 address = InetAddress.getLocalHost();
+		 DatagramPacket packet = new DatagramPacket(msg.getBytes(), msg.length(), address, port);
+		 dsck.send(packet);
+		 dsck.close();
+		}
+		catch(SocketException e) 
+			{ 
+				System.out.println(e); 
+			}
+		catch (UnknownHostException e) {
+			System.out.println(e); 
+		}
+		catch(IOException e) 
+		{ 
+			System.out.println(e); 
+		} 
+	}
+		
+	public String encoder(String msg){
+        String hexa = toHexa(msg);
+        return hexa;
+    }
+
+    public String toHexa(String str){
+        StringBuffer sb = new StringBuffer();
+        char ch[] = str.toCharArray();
+
+        for(int i = 0; i < ch.length; i++) {
+            String hexString = Integer.toHexString(ch[i]);
+            sb.append(hexString);
+        }
+
+        String result = sb.toString();
+        return result;
+    }
+	public String checkSumSender(String s) {
+		
+        int checkSumReceiver = checkSumReceiver(s);
+        checkSumReceiver = checkComplement(checkSumReceiver);
+        int m = checkSumReceiver + checkSum;
+        m = checkComplement(m);
+        
+        if (m == 0) {
+            System.out.println("Data received from"+ address + "is" + msg);
+        } else {
+            System.out.println("The verification of the checksum demonstrates that the packet received is correct.");
+        }
+    }
+}
+*/
