@@ -139,13 +139,38 @@ public class PacketSender{
     }
 }
 
-/*
+    }
+	public String checkSumSend(String s) {
+        String hexString = new String();
+        int checkSum = 0;
+        x = encoder(headerIP);
+        if (((datagram.length())+(msg.length())) % 8 == 0) {
+            headerIP = headerIP + "0";
+		    encoder(headerIP);
+	    }else { 
+		    encoder(headerIP);
+	    }
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+        checkSum += x;
+	    hexString = Integer.toHexString(checkSum);
 
-public class PacketSender { 
+        if (hexString.length() > 4) {
+            int carry = Integer.parseInt(("" + hexString.charAt(0)), 16);
+		    checkSum = Integer.parseInt(hexString, 16);
+            checkSum += carry;
+    }
+	
+	    int complement = Integer.parseInt("FFFF", 16) - checkSum;
+	    int checkSumSend = complement;
+
+        return (Integer.toString(checkSumSend)); 
+}
+
+        public static void main(String[] args){
+        PacketSender sender = new PacketSender(args[0],Integer.parseInt(args[1]));
+    }
+    /*
+     * public class PacketSender { 
 
 	private Socket MyClient;
 	private BufferedReader input;
@@ -154,77 +179,55 @@ public class PacketSender {
 	
 	public PacketSender(InetAddress address, int port){ 
 
-		try{ 			
+		try
+		{ 
+			
 			MyClient = new Socket(address, port); 
 			System.out.println("Connected"); 
 
+			
 			input = new BufferedReader(new InputStreamReader(System.in));
-		
+
+			
 			output = new DataOutputStream(MyClient.getOutputStream()); 
 		} 
-		catch(UnknownHostException e) { 
+		catch(UnknownHostException e) 
+		{ 
 			System.out.println(e); 
 		} 
-		catch(IOException e) { 
+		catch(IOException e) 
+		{ 
 			System.out.println(e); 
 		} 
+
 		
 		String line = ""; 
 
-		while (!line.equals("Stop")) { 
-			try{ 
+		
+		while (!line.equals("Stop")) 
+		{ 
+			try
+			{ 
 				line = input.readLine();
 				
 				output.writeUTF(line); 
 			} 
-			catch(IOException i) { 
+			catch(IOException i) 
+			{ 
 				System.out.println(i); 
 			} 
 		} 
-		try{ 
+		try
+		{ 
 			input.close(); 
 			output.close(); 
 			MyClient.close(); 
 		} 
-		catch(IOException i) { 
+		catch(IOException i) 
+		{ 
 			System.out.println(i); 
 		} 
-	}
-		
-	public String encoder(String msg){
-        String hexa = toHexa(msg);
-        return hexa;
-    }
-
-    public String toHexa(String str){
-        StringBuffer sb = new StringBuffer();
-        char ch[] = str.toCharArray();
-
-        for(int i = 0; i < ch.length; i++) {
-            String hexString = Integer.toHexString(ch[i]);
-            sb.append(hexString);
-        }
-
-        String result = sb.toString();
-        return result;
-    }
-	public String checkSumSender(String s) {
-		
-        int checkSumReceiver = checkSumReceiver(s);
-        checkSumReceiver = checkComplement(checkSumReceiver);
-        int m = checkSumReceiver + checkSum;
-        m = checkComplement(m);
-        
-        if (m == 0) {
-            System.out.println("Data received from"+ address + "is" + msg);
-        } else {
-            System.out.println("The verification of the checksum demonstrates that the packet received is correct.");
-        }
-    }
-
-        public static void main(String[] args){
-        PacketSender sender = new PacketSender(args[0],Integer.parseInt(args[1]));
-    }
+	} 
+     */
 }
-*/
 

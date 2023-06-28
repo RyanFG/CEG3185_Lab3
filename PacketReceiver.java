@@ -65,27 +65,42 @@ public class PacketReceiver{
         PacketReceiver receiver = new PacketReceiver(Integer.parseInt(args[0]));
     }
 }
-/*
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
+	public String checkSumReceiver(String s) {
+        int checksum = 0;
+		String y = decoder(checkSumSend);
 
-public class PacketReceiver{ 
+        if (((header.length())+(headerIP.length())) % 8 == 0) {
+            headerIP = headerIP + "0";
+		    decoder(headerIP);
+	    }else { 
+		    decoder(headerIP);
+	    }
 
-	//initialize socket and input stream 
-	private Socket socket;
-	private ServerSocket MyServer;
-	private DataInputStream in;
+        checkSum += y;
 
-	
+	    String hexString = Integer.toHexString(checkSum);
 
-	public PacketReceiver(int port){ 
+        if (y.length() > 4) {
+            int carry = Integer.parseInt(("" + y.charAt(0)), 16);
+            y += carry;
+        }
+		int complement = Integer.parseInt("FFFF", 16) - y;
+		int checkSumReceived = complement;
+
+        return (Integer.toString(checkSumReceived)); 
+    }
+
+
+    /*
+     * public PacketReceiver(int port){ 
 		try{ 
 		
 			MyServer = new ServerSocket(port); 
 			//System.out.println("Server started"); 
+
 			//System.out.println("Waiting for a client ..."); 
+
 	
 			socket = MyServer.accept(); 
 			System.out.println("Client accepted"); 
@@ -119,52 +134,10 @@ public class PacketReceiver{
 			System.out.println(e); 
 		} 
 	} 
+     */
 
-	public String decoder(String msg){
-        String text = toString(msg);
-        return text;
-    }
-
-    public String toString(String str){
-        String result = new String();
-        char[] charArray = str.toCharArray();
-        for(int i = 0; i < charArray.length; i=i+2) {
-            String st = ""+charArray[i]+""+charArray[i+1];
-            char ch = (char)Integer.parseInt(st, 16);
-            result = result + ch;
-        }
-        return result;
-
-    }
-	public String checkSumReceiver(String s) {
-        String hexString = new String();
-        int x, i, checkSum = 0;
-        decoder(hexString);
-        x = Integer.parseInt(toString(hexString));
-
-        checkSum += x;
-
-        if (hexString.length() > 8) {
-            int carry = Integer.parseInt(("" + hexString.charAt(0)), 16);
-
-            checkSum += carry;
-        }
-        
-        checkSum = checkComplement(checkSum);
-
-        
-        return (Integer.toString(checkSum)); 
-    }
-	public int checkComplement(int checkSum) {
-
-        checkSum = Integer.parseInt("FFFF", 16) - checkSum;
-        return checkSum;
-    }
-    public static void main(String args[]) { 
-		 
-	} 
 }
-*/
+
 	
 	
 	
