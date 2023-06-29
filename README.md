@@ -1,5 +1,6 @@
 # CEG3185_Lab3
-# Group5: Ryan Frost-Garant (300114543) & Aélys Izere (8670413)
+
+Group5: Ryan Frost-Garant (300114543) & Aélys Izere (8670413)
 
 This is run using two terminals, one for the PacketSender.java and one for the PacketReceiver.java
 
