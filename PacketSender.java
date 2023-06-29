@@ -3,19 +3,21 @@ import java.net.*;
 import java.util.Random;
 
 public class PacketSender{
+    private Socket client = null;
+    private DataInputStream input = null;
+    private DataOutputStream output = null;
+ 
+    public PacketSender(String address, int portNum){
 
-    Socket MyClient = null;
-    DataInputStream input = null;
-    DataOutputStream output = null;
-
-    public PacketSender(String address,int portNum){ 
-        
-        try{
-            MyClient = new Socket(address,portNum);
-
+        try {
+            client = new Socket(address, portNum);
+            System.out.println("Connected");
+ 
             input = new DataInputStream(System.in);
-            output = new DataOutputStream(MyClient.getOutputStream());
+ 
+            output = new DataOutputStream(client.getOutputStream());
         }
+        
         catch (UnknownHostException u) {
             System.out.println(u);
             return;
@@ -44,7 +46,7 @@ public class PacketSender{
         try {
             input.close();
             output.close();
-            MyClient.close();
+            client.close();
         }
 
         catch (IOException i) {
@@ -139,7 +141,7 @@ public class PacketSender{
     }
 }
 
-    }
+    /*
 	public String checkSumSend(String s) {
         String hexString = new String();
         int checkSum = 0;
@@ -158,17 +160,14 @@ public class PacketSender{
             int carry = Integer.parseInt(("" + hexString.charAt(0)), 16);
 		    checkSum = Integer.parseInt(hexString, 16);
             checkSum += carry;
-    }
+        }
 	
 	    int complement = Integer.parseInt("FFFF", 16) - checkSum;
 	    int checkSumSend = complement;
 
-        return (Integer.toString(checkSumSend)); 
-}
+        return (Integer.toString(checkSumSend));    
+    }*/
 
-        public static void main(String[] args){
-        PacketSender sender = new PacketSender(args[0],Integer.parseInt(args[1]));
-    }
     /*
      * public class PacketSender { 
 
@@ -229,5 +228,5 @@ public class PacketSender{
 		} 
 	} 
      */
-}
+
 
