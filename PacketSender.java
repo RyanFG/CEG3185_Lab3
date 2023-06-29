@@ -60,6 +60,9 @@ public class PacketSender{
 
         String datagram = "";
         String header = "4500";
+        while(!((20+msg.length())%8 == 0)){
+            msg = msg+"0";
+        }
         int num = (int)Math.floor(20+(hexa.length()/2));
         String headerIP = Integer.toHexString(num);
         while(headerIP.length() < 4){headerIP = "0"+headerIP;}
@@ -128,12 +131,19 @@ public class PacketSender{
     public String hexaAdd(int header,int headerIP,int ident,int flag,int ttl,int checksum,int srcIP1,int srcIP2, int dstIP1, int dstIP2){
         int sum = header+headerIP+ident+ttl+checksum+srcIP1+srcIP2+dstIP1+dstIP2;
 
-        String hexsum = Integer.toHexString(sum);
-        while(sum > 65535){
-            int s = sum-65535;
-        }
+        String hexString = Integer.toHexString(sum);
 
-        return hexsum;
+        while(hexString.length() > 4){
+            int carry = Integer.parseInt(("" + hexString.charAt(0)), 16);
+		    int calcedCheckSum = Integer.parseInt(hexString, 16);
+            calcedCheckSum += carry;
+            hexString = Integer.toHexString(calcedCheckSum);
+        }
+	
+	    int complement = Integer.parseInt("FFFF", 16) - Integer.parseInt(hexString, 16);
+	    int checkSumSend = complement;
+
+        return (Integer.toString(checkSumSend));
     }
 
     public static void main(String[] args){
